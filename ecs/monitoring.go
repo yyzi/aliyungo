@@ -41,15 +41,23 @@ type DescribeInstanceMonitorDataResponse struct {
 //
 // You can read doc at http://docs.aliyun.com/#/pub/ecs/open-api/monitor&describeinstancemonitordata
 func (client *Client) DescribeInstanceMonitorData(args *DescribeInstanceMonitorDataArgs) (monitorData []InstanceMonitorDataType, err error) {
-	if args.Period == 0 {
-		args.Period = 60
-	}
-	response := DescribeInstanceMonitorDataResponse{}
-	err = client.Invoke("DescribeInstanceMonitorData", args, &response)
+	response, err := client.DescribeInstanceMonitorDataWithRaw(args)
 	if err != nil {
 		return nil, err
 	}
 	return response.MonitorData.InstanceMonitorData, err
+}
+
+func (client *Client) DescribeInstanceMonitorDataWithRaw(args *DescribeInstanceMonitorDataArgs) (response *DescribeInstanceMonitorDataResponse, err error) {
+	if args.Period == 0 {
+		args.Period = 60
+	}
+	response = &DescribeInstanceMonitorDataResponse{}
+	err = client.Invoke("DescribeInstanceMonitorData", args, response)
+	if err != nil {
+		return nil, err
+	}
+	return response, err
 }
 
 type DescribeEipMonitorDataArgs struct {
@@ -81,15 +89,23 @@ type DescribeEipMonitorDataResponse struct {
 //
 // You can read doc at http://docs.aliyun.com/#/pub/ecs/open-api/monitor&describeeipmonitordata
 func (client *Client) DescribeEipMonitorData(args *DescribeEipMonitorDataArgs) (monitorData []EipMonitorDataType, err error) {
-	if args.Period == 0 {
-		args.Period = 60
-	}
-	response := DescribeEipMonitorDataResponse{}
-	err = client.Invoke("DescribeEipMonitorData", args, &response)
+	response, err := client.DescribeEipMonitorDataWithRaw(args)
 	if err != nil {
 		return nil, err
 	}
 	return response.EipMonitorDatas.EipMonitorData, err
+}
+
+func (client *Client) DescribeEipMonitorDataWithRaw(args *DescribeEipMonitorDataArgs) (response *DescribeEipMonitorDataResponse, err error) {
+	if args.Period == 0 {
+		args.Period = 60
+	}
+	response = &DescribeEipMonitorDataResponse{}
+	err = client.Invoke("DescribeEipMonitorData", args, response)
+	if err != nil {
+		return nil, err
+	}
+	return response, err
 }
 
 type DescribeDiskMonitorDataArgs struct {
@@ -124,13 +140,21 @@ type DescribeDiskMonitorDataResponse struct {
 //
 // You can read doc at http://docs.aliyun.com/#/pub/ecs/open-api/monitor&describediskmonitordata
 func (client *Client) DescribeDiskMonitorData(args *DescribeDiskMonitorDataArgs) (monitorData []DiskMonitorDataType, totalCount int, err error) {
-	if args.Period == 0 {
-		args.Period = 60
-	}
-	response := DescribeDiskMonitorDataResponse{}
-	err = client.Invoke("DescribeDiskMonitorData", args, &response)
+	response, err := client.DescribeDiskMonitorDataWithRaw(args)
 	if err != nil {
 		return nil, 0, err
 	}
 	return response.MonitorData.DiskMonitorData, response.TotalCount, err
+}
+
+func (client *Client) DescribeDiskMonitorDataWithRaw(args *DescribeDiskMonitorDataArgs) (response *DescribeDiskMonitorDataResponse, err error) {
+	if args.Period == 0 {
+		args.Period = 60
+	}
+	response = &DescribeDiskMonitorDataResponse{}
+	err = client.Invoke("DescribeDiskMonitorData", args, response)
+	if err != nil {
+		return nil, err
+	}
+	return response, err
 }

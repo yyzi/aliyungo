@@ -176,6 +176,15 @@ type DescribeBandwidthPackagesResponse struct {
 }
 
 func (client *Client) DescribeBandwidthPackages(args *DescribeBandwidthPackagesArgs) ([]DescribeBandwidthPackageType, error) {
+	response, err := client.DescribeBandwidthPackagesWithRaw(args)
+	if err != nil {
+		return nil, err
+	}
+
+	return response.BandwidthPackages.BandwidthPackage, err
+}
+
+func (client *Client) DescribeBandwidthPackagesWithRaw(args *DescribeBandwidthPackagesArgs) (*DescribeBandwidthPackagesResponse, error) {
 	response := &DescribeBandwidthPackagesResponse{}
 
 	err := client.Invoke("DescribeBandwidthPackages", args, response)
@@ -183,7 +192,7 @@ func (client *Client) DescribeBandwidthPackages(args *DescribeBandwidthPackagesA
 		return nil, err
 	}
 
-	return response.BandwidthPackages.BandwidthPackage, err
+	return response, err
 }
 
 type DeleteBandwidthPackageArgs struct {

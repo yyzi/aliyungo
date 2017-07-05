@@ -23,12 +23,19 @@ type DescribeRegionsResponse struct {
 //
 // You can read doc at http://docs.aliyun.com/#/pub/ecs/open-api/region&describeregions
 func (client *Client) DescribeRegions() (regions []RegionType, err error) {
-	response := DescribeRegionsResponse{}
-
-	err = client.Invoke("DescribeRegions", &DescribeRegionsArgs{}, &response)
-
+	response, err := client.DescribeRegionsWithRaw(&DescribeRegionsArgs{})
 	if err != nil {
 		return []RegionType{}, err
 	}
 	return response.Regions.Region, nil
+}
+
+func (client *Client) DescribeRegionsWithRaw(args *DescribeRegionsArgs) (response *DescribeRegionsResponse, err error) {
+	response = &DescribeRegionsResponse{}
+
+	err = client.Invoke("DescribeRegions", args, response)
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
 }

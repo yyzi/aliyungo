@@ -118,11 +118,19 @@ type DescribeTagsResponse struct {
 //
 // You can read doc at http://docs.aliyun.com/#/pub/ecs/open-api/tags&describeresourcebytags
 func (client *Client) DescribeTags(args *DescribeTagsArgs) (tags []TagItemType, pagination *common.PaginationResult, err error) {
-	args.Validate()
-	response := DescribeTagsResponse{}
-	err = client.Invoke("DescribeTags", args, &response)
+	response, err := client.DescribeTagsWithRaw(args)
 	if err != nil {
 		return nil, nil, err
 	}
 	return response.Tags.Tag, &response.PaginationResult, nil
+}
+
+func (client *Client) DescribeTagsWithRaw(args *DescribeTagsArgs) (response *DescribeTagsResponse, err error) {
+	args.Validate()
+	response = &DescribeTagsResponse{}
+	err = client.Invoke("DescribeTags", args, response)
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
 }

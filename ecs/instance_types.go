@@ -26,10 +26,7 @@ type DescribeInstanceTypesResponse struct {
 //
 // You can read doc at http://docs.aliyun.com/#/pub/ecs/open-api/other&describeinstancetypes
 func (client *Client) DescribeInstanceTypes() (instanceTypes []InstanceTypeItemType, err error) {
-	response := DescribeInstanceTypesResponse{}
-
-	err = client.Invoke("DescribeInstanceTypes", &DescribeInstanceTypesArgs{}, &response)
-
+	response, err := client.DescribeInstanceTypesWithRaw(&DescribeInstanceTypesArgs{})
 	if err != nil {
 		return []InstanceTypeItemType{}, err
 	}
@@ -39,16 +36,26 @@ func (client *Client) DescribeInstanceTypes() (instanceTypes []InstanceTypeItemT
 
 // support user args
 func (client *Client) DescribeInstanceTypesNew(args *DescribeInstanceTypesArgs) (instanceTypes []InstanceTypeItemType, err error) {
-	response := DescribeInstanceTypesResponse{}
-
-	err = client.Invoke("DescribeInstanceTypes", args, &response)
-
+	response, err := client.DescribeInstanceTypesWithRaw(args)
 	if err != nil {
 		return []InstanceTypeItemType{}, err
 	}
 	return response.InstanceTypes.InstanceType, nil
 
 }
+
+// support raw response
+func (client *Client) DescribeInstanceTypesWithRaw(args *DescribeInstanceTypesArgs) (response *DescribeInstanceTypesResponse, err error) {
+	response = &DescribeInstanceTypesResponse{}
+
+	err = client.Invoke("DescribeInstanceTypes", args, response)
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
+
+}
+
 
 type DescribeInstanceTypeFamiliesArgs struct {
 	RegionId   common.Region

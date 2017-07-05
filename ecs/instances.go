@@ -58,15 +58,23 @@ type DescribeUserdataResponse struct {
 //
 // You can read doc at https://intl.aliyun.com/help/doc-detail/49227.htm
 func (client *Client) DescribeUserdata(args *DescribeUserdataArgs) (userData *DescribeUserdataItemType, err error) {
-	response := DescribeUserdataResponse{}
-
-	err = client.Invoke("DescribeUserdata", args, &response)
-
+	response, err := client.DescribeUserdataWithRaw(args)
 	if err == nil {
 		return &response.DescribeUserdataItemType, nil
 	}
 
 	return nil, err
+}
+
+func (client *Client) DescribeUserdataWithRaw(args *DescribeUserdataArgs) (response *DescribeUserdataResponse, err error) {
+	response = &DescribeUserdataResponse{}
+
+	err = client.Invoke("DescribeUserdata", args, response)
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 type DescribeInstanceStatusArgs struct {
@@ -274,14 +282,22 @@ type DescribeInstanceAttributeResponse struct {
 //
 // You can read doc at http://docs.aliyun.com/#/pub/ecs/open-api/instance&describeinstanceattribute
 func (client *Client) DescribeInstanceAttribute(instanceId string) (instance *InstanceAttributesType, err error) {
-	args := DescribeInstanceAttributeArgs{InstanceId: instanceId}
+	args := &DescribeInstanceAttributeArgs{InstanceId: instanceId}
 
-	response := DescribeInstanceAttributeResponse{}
-	err = client.Invoke("DescribeInstanceAttribute", &args, &response)
+	response, err := client.DescribeInstanceAttributeWithRaw(args)
 	if err != nil {
 		return nil, err
 	}
 	return &response.InstanceAttributesType, err
+}
+
+func (client *Client) DescribeInstanceAttributeWithRaw(args *DescribeInstanceAttributeArgs) (response *DescribeInstanceAttributeResponse, err error) {
+	response = &DescribeInstanceAttributeResponse{}
+	err = client.Invoke("DescribeInstanceAttribute", args, response)
+	if err != nil {
+		return nil, err
+	}
+	return response, err
 }
 
 type ModifyInstanceAttributeArgs struct {
@@ -375,15 +391,23 @@ type DescribeInstanceVncUrlResponse struct {
 //
 // You can read doc at http://docs.aliyun.com/#/pub/ecs/open-api/instance&describeinstancevncurl
 func (client *Client) DescribeInstanceVncUrl(args *DescribeInstanceVncUrlArgs) (string, error) {
-	response := DescribeInstanceVncUrlResponse{}
-
-	err := client.Invoke("DescribeInstanceVncUrl", args, &response)
-
+	response, err := client.DescribeInstanceVncUrlWithRaw(args)
 	if err == nil {
 		return response.VncUrl, nil
 	}
 
 	return "", err
+}
+
+func (client *Client) DescribeInstanceVncUrlWithRaw(args *DescribeInstanceVncUrlArgs) (response *DescribeInstanceVncUrlResponse, err error) {
+	response = &DescribeInstanceVncUrlResponse{}
+
+	err = client.Invoke("DescribeInstanceVncUrl", args, response)
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 type DescribeInstancesArgs struct {
