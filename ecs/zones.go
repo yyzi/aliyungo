@@ -61,8 +61,7 @@ func (client *Client) DescribeZones(regionId common.Region) (zones []ZoneType, e
 func (client *Client) DescribeZonesWithRaw(args *DescribeZonesArgs) (response *DescribeZonesResponse, err error) {
 	response = &DescribeZonesResponse{}
 
-	err = client.Invoke("DescribeZones", &args, response)
-
+	err = client.Invoke("DescribeZones", args, response)
 	if err == nil {
 		return response, nil
 	}
