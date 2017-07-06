@@ -240,6 +240,7 @@ type InstanceAttributesType struct {
 	InstanceId         string
 	InstanceName       string
 	Description        string
+	DeviceAvailable    bool
 	ImageId            string
 	RegionId           common.Region
 	ZoneId             string
