@@ -194,6 +194,7 @@ type LoadBalancerType struct {
 
 type DescribeLoadBalancersResponse struct {
 	common.Response
+	common.PaginationResult
 	LoadBalancers struct {
 		LoadBalancer []LoadBalancerType
 	}
@@ -204,12 +205,20 @@ type DescribeLoadBalancersResponse struct {
 // You can read doc at http://docs.aliyun.com/#/pub/slb/api-reference/api-related-loadbalancer&DescribeLoadBalancers
 
 func (client *Client) DescribeLoadBalancers(args *DescribeLoadBalancersArgs) (loadBalancers []LoadBalancerType, err error) {
-	response := &DescribeLoadBalancersResponse{}
-	err = client.Invoke("DescribeLoadBalancers", args, response)
+	response, err := client.DescribeLoadBalancersWithRaw(args)
 	if err != nil {
 		return nil, err
 	}
 	return response.LoadBalancers.LoadBalancer, err
+}
+
+func (client *Client) DescribeLoadBalancersWithRaw(args *DescribeLoadBalancersArgs) (response *DescribeLoadBalancersResponse, err error) {
+	response = &DescribeLoadBalancersResponse{}
+	err = client.Invoke("DescribeLoadBalancers", args, response)
+	if err != nil {
+		return nil, err
+	}
+	return response, err
 }
 
 type DescribeLoadBalancerAttributeArgs struct {
@@ -226,13 +235,21 @@ type DescribeLoadBalancerAttributeResponse struct {
 // You can read doc at http://docs.aliyun.com/#/pub/slb/api-reference/api-related-loadbalancer&DescribeLoadBalancerAttribute
 
 func (client *Client) DescribeLoadBalancerAttribute(loadBalancerId string) (loadBalancer *LoadBalancerType, err error) {
-	args := &DescribeLoadBalancersArgs{
+	args := &DescribeLoadBalancerAttributeArgs{
 		LoadBalancerId: loadBalancerId,
 	}
-	response := &DescribeLoadBalancerAttributeResponse{}
-	err = client.Invoke("DescribeLoadBalancerAttribute", args, response)
+	response, err := client.DescribeLoadBalancerAttributeWithRaw(args)
 	if err != nil {
 		return nil, err
 	}
 	return &response.LoadBalancerType, err
+}
+
+func (client *Client) DescribeLoadBalancerAttributeWithRaw(args *DescribeLoadBalancerAttributeArgs) (response *DescribeLoadBalancerAttributeResponse, err error) {
+	response = &DescribeLoadBalancerAttributeResponse{}
+	err = client.Invoke("DescribeLoadBalancerAttribute", args, response)
+	if err != nil {
+		return nil, err
+	}
+	return response, err
 }
